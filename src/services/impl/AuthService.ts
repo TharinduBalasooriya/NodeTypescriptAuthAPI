@@ -1,12 +1,13 @@
 
 import { myDataSource } from "../../app-data-source";
-import { ApplicationError, INVALID_CREDENTIALS_ERR_CODE, INVALID_CREDENTIALS_ERR_MESSAGE, INVALID_CREDENTIALS_ERR_NAME, USER_ALREADY_EXIST_ERR_MESSAGE, USER_ALREADY_EXIST_ERR_NAME, USER_NOT_FOUND_ERR_CODE, } from "../../consts/ApplicationErrors";
+import { ApplicationError, INVALID_CREDENTIALS_ERR_CODE, INVALID_CREDENTIALS_ERR_MESSAGE, INVALID_CREDENTIALS_ERR_NAME, USER_ALREADY_EXIST_ERR_MESSAGE, USER_ALREADY_EXIST_ERR_NAME, USER_NOT_FOUND_ERR_CODE, USER_NOT_FOUND_ERR_MESSAGE, USER_NOT_FOUND_ERR_NAME, } from "../../consts/ApplicationErrors";
 import User from "../../entities/User";
 import { IAuthService } from "../IAuthService";
 import { hash, compare } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 
 export class AuthService implements IAuthService {
+   
 
     async saveUser(user: User): Promise<User> {
 
@@ -42,5 +43,14 @@ export class AuthService implements IAuthService {
         return token
     }
 
+    async getUserDetails(userId: number): Promise<User> {
+        const userRepository = myDataSource.getRepository(User);
+        console.log("User Id : " + userId)
+        // const user = await userRepository.findOneBy({id : userId});
+        // if (!user) {
+        //     throw new ApplicationError(USER_NOT_FOUND_ERR_NAME, USER_NOT_FOUND_ERR_CODE,USER_NOT_FOUND_ERR_MESSAGE);
+        // }
+        return new User(",", ",", ",", ",");
+    }
 
 }

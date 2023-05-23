@@ -51,4 +51,21 @@ export default class AuthController {
             return handleError(res, 500, err.message)
         }
     }
+
+    public async getUserData(req: Request, res: Response) {
+        console.log("Get user data");
+        try{
+            //Get id from query params
+            const userId = parseInt(req.params.id)
+            const user = await this.authService.getUserDetails(userId);
+            const userWithoutPassword = omit(user, 'password');
+            return res.status(200).json(userWithoutPassword);
+        }catch(err : any){
+            console.log(err);
+            if(err instanceof ApplicationError){
+                return handleError(res, err.code, err.message)
+            }
+            return handleError(res, 500, err.message)
+        }
+    }
 }
