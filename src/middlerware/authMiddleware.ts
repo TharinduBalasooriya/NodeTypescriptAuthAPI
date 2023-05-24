@@ -32,7 +32,7 @@ export const authMiddleware = async (
     const userRepository = myDataSource.getRepository(User);
 
     // Retrieve the user from the database based on the decoded token
-    const user = await userRepository.findOne(userId);
+    const user = await userRepository.findOneBy({id : userId});
 
     if (!user) {
       return handleError(res, 401, 'Invalid token');

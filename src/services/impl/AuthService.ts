@@ -46,11 +46,11 @@ export class AuthService implements IAuthService {
     async getUserDetails(userId: number): Promise<User> {
         const userRepository = myDataSource.getRepository(User);
         console.log("User Id : " + userId)
-        // const user = await userRepository.findOneBy({id : userId});
-        // if (!user) {
-        //     throw new ApplicationError(USER_NOT_FOUND_ERR_NAME, USER_NOT_FOUND_ERR_CODE,USER_NOT_FOUND_ERR_MESSAGE);
-        // }
-        return new User(",", ",", ",", ",");
+        const user = await userRepository.findOne({where : {id : userId}});
+        if (!user) {
+            throw new ApplicationError(USER_NOT_FOUND_ERR_NAME, USER_NOT_FOUND_ERR_CODE,USER_NOT_FOUND_ERR_MESSAGE);
+        }
+        return user;
     }
 
 }
