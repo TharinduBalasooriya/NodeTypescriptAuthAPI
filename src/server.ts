@@ -3,10 +3,14 @@ import { Request, Response } from "express";
 import dotenv from 'dotenv';
 import { myDataSource } from "./app-data-source"
 import routes from "./routes";
+import cors from 'cors';
+
 dotenv.config();
 
 // create and setup express app
 const app = express()
+// Enable CORS for all routes
+app.use(cors());
 app.use(express.json())
 const port = process.env.PORT || 3000;
 
@@ -15,10 +19,10 @@ myDataSource
     .initialize()
     .then(() => {
         console.log("Data Source has been initialized!")
+
         app.get("/healthCheck", (req: Request, res: Response) => {
             res.status(200).send("server is working")
         })
-        
         app.use('/api', routes);
         
         app.listen(port, () => {

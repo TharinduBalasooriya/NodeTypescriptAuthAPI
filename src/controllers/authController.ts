@@ -42,7 +42,7 @@ export default class AuthController {
         try{
             const { email, password } = req.body;
             const token = await this.authService.login(email, password);
-            return res.status(200).json({ token });
+            return res.status(200).json(token);
         }catch(err : any){
             console.log(err);
             if(err instanceof ApplicationError){

@@ -1,6 +1,7 @@
 
 import { myDataSource } from "../../app-data-source";
 import { ApplicationError, INVALID_CREDENTIALS_ERR_CODE, INVALID_CREDENTIALS_ERR_MESSAGE, INVALID_CREDENTIALS_ERR_NAME, USER_ALREADY_EXIST_ERR_MESSAGE, USER_ALREADY_EXIST_ERR_NAME, USER_NOT_FOUND_ERR_CODE, USER_NOT_FOUND_ERR_MESSAGE, USER_NOT_FOUND_ERR_NAME, } from "../../consts/ApplicationErrors";
+import { LoginResponse } from "../../dtos/loginRespones.dto";
 import User from "../../entities/User";
 import { IAuthService } from "../IAuthService";
 import { hash, compare } from 'bcrypt';
@@ -22,7 +23,7 @@ export class AuthService implements IAuthService {
         return savedUser;
     }
 
-    async login(userName: string, password: string): Promise<string> {
+    async login(userName: string, password: string): Promise<LoginResponse> {
         const userRepository = myDataSource.getRepository(User);
         const user = await userRepository.findOneBy({ email: userName });
         if (!user) {
@@ -40,7 +41,11 @@ export class AuthService implements IAuthService {
 
         //Generate JWT
         const token = sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        return token
+        const loginResponse : LoginResponse = {
+            token : token,
+            userId : user.id
+        };
+        return loginResponse
     }
 
     async getUserDetails(userId: number): Promise<User> {
