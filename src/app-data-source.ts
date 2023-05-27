@@ -15,12 +15,12 @@ if (isProduction) {
 
 export const myDataSource = new DataSource({
     type: "mysql",
-    host: "localhost",
+    host: process.env.DB_HOST || "localhost",
     port: 3306,
-    username: "root",
-    password: "admin",
+    username: "dev",
+    password: process.env.DB_PASSWORD ,
     database: "user_mgmt",
     entities: [entitiesPath],
     logging: true,
-    synchronize: true,
+    synchronize: true
 });
